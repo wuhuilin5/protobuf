@@ -34,7 +34,7 @@
 #include <google/protobuf/compiler/cpp/cpp_generator.h>
 #include <google/protobuf/compiler/python/python_generator.h>
 #include <google/protobuf/compiler/java/java_generator.h>
-
+#include <google/protobuf/compiler/as3/as3_generator.h>
 
 int main(int argc, char* argv[]) {
 
@@ -56,6 +56,10 @@ int main(int argc, char* argv[]) {
   google::protobuf::compiler::python::Generator py_generator;
   cli.RegisterGenerator("--python_out", &py_generator,
                         "Generate Python source file.");
+
+  google::protobuf::compiler::as3::As3Generator as3_generator;
+  cli.RegisterGenerator("--as3_out", &as3_generator,
+                        "Generate as3 source file.");
 
   return cli.Run(argc, argv);
 }

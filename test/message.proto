@@ -1,0 +1,13 @@
+message msg_header{
+	required int32 msgid = 1;
+	enum MSG_ID{
+		msg_person_info_c2s = 2;
+	}
+}
+
+message person_info_c2s
+{
+	required int32 msgid = 1;
+	required string name = 2;
+	required int32 id = 3;
+}
