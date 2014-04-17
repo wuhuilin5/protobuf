@@ -240,8 +240,7 @@ void MessageGenerator::Generate(io::Printer* printer) {
     descriptor_->containing_type() == NULL &&
     descriptor_->file()->options().java_multiple_files();
 
-	
-	printer->Print("import com.google.protobuf.*;\n");
+	/*printer->Print("import com.google.protobuf.*;\n");
 	printer->Print("import flash.utils.*;\n");
 	printer->Print("import com.hurlant.math.BigInteger;\n");
 	
@@ -288,7 +287,58 @@ void MessageGenerator::Generate(io::Printer* printer) {
 	  printer->Print("\n");
   }
   printer->Outdent();
-  printer->Print("}\n");
+  printer->Print("}\n");*/
+
+	//import
+ 	printer->Print("import flash.utils.ByteArray;\n");
+	printer->Print("\n");
+
+  //class..
+  	printer->Print("public class $classname$ extends base_message {\n",
+				   "classname", descriptor_->name());
+  printer->Indent();
+
+  	//Fields
+  for (int i = 0; i < descriptor_->field_count(); i++) {
+    //PrintFieldComment(printer, descriptor_->field(i));
+    field_generators_.get(descriptor_->field(i)).GenerateMembers(printer);
+   // printer->Print("\n");
+  }
+  printer->Print("\n");
+  //constructor  start
+  	printer->Print("public function $classname$() \n{\n",
+				   "classname", descriptor_->name());
+
+  	printer->Indent();
+	//function body..
+	printer->Outdent();
+	printer->Print( "\n}\n" );
+
+	 //constructor  end
+
+  printer->Print(
+    "\n"
+	"private function release():void\n"
+	"{\n"
+	"}\n");
+
+  printer->Print( 
+	  "\n"
+	  "override public function encode( pack:PacketStream):Boolean\n"
+	  "{\n");
+  printer->Indent();
+  printer->Print( "return true;\n" );
+  printer->Outdent();
+  printer->Print( "}\n" );
+
+    printer->Print( 
+	  "\n"
+	  "override public function decode( pack:PacketStream):Boolean\n"
+	  "{\n");
+  printer->Indent();
+  printer->Print( "return true;\n" );
+  printer->Outdent();
+  printer->Print( "}\n" );
 
  // printer->Print(
  //   "\n"
@@ -327,13 +377,6 @@ void MessageGenerator::Generate(io::Printer* printer) {
   //for (int i = 0; i < descriptor_->extension_count(); i++) {
   //  ExtensionGenerator(descriptor_->extension(i)).Generate(printer);
   //}
-
-  // Fields
-  for (int i = 0; i < descriptor_->field_count(); i++) {
-    PrintFieldComment(printer, descriptor_->field(i));
-    field_generators_.get(descriptor_->field(i)).GenerateMembers(printer);
-    printer->Print("\n");
-  }
 
 	//not supported for now - [Philippe Pascal (Sorrydevil) Oct15th 2009 - protobuf-actionscript3 project]
   //if (descriptor_->file()->options().optimize_for() == FileOptions::SPEED) {
